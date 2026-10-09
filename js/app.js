@@ -175,15 +175,43 @@ class ChessApp {
         this.mp = new MultiplayerManager({
             onRoomCreated: (roomCode) => {
                 document.getElementById('display-room-code').textContent = roomCode;
-                // Update URL hash without reload
                 window.location.hash = `room=${roomCode}`;
             },
             onConnected: ({ isHost, myColor }) => {
                 this.playerColor = myColor;
                 document.getElementById('modal-invite').classList.remove('open');
                 this.showStatusNotification(`Connected to match! You are playing ${myColor === 'w' ? 'White' : 'Black'}.`);
-                document.getElementById('btn-toggle-chat').style.display = 'flex';
+                document.getElementById('call-status-label').textContent = 'Ready to Call';
                 this.setupNewGame();
+            },
+            onLocalStream: (stream) => {
+                const localVideo = document.getElementById('local-video');
+                localVideo.srcObject = stream;
+                localVideo.classList.add('active');
+            },
+            onRemoteStream: (stream) => {
+                const remoteVideo = document.getElementById('remote-video');
+                remoteVideo.srcObject = stream;
+                remoteVideo.classList.add('active');
+                document.getElementById('video-placeholder').style.display = 'none';
+                const callBtn = document.getElementById('btn-start-call');
+                callBtn.classList.remove('btn-call-start');
+                callBtn.classList.add('btn-call-active');
+                callBtn.innerHTML = '<i class="fa-solid fa-phone-slash"></i>';
+            },
+            onCallEnded: () => {
+                const remoteVideo = document.getElementById('remote-video');
+                remoteVideo.srcObject = null;
+                remoteVideo.classList.remove('active');
+                const localVideo = document.getElementById('local-video');
+                localVideo.srcObject = null;
+                localVideo.classList.remove('active');
+                document.getElementById('video-placeholder').style.display = 'flex';
+                document.getElementById('call-status-label').textContent = 'Call Inactive';
+                const callBtn = document.getElementById('btn-start-call');
+                callBtn.classList.add('btn-call-start');
+                callBtn.classList.remove('btn-call-active');
+                callBtn.innerHTML = '<i class="fa-solid fa-phone"></i>';
             },
             onRemoteMove: (move) => {
                 this.executeMove(move, false);
@@ -331,19 +359,37 @@ class ChessApp {
             });
         });
 
-        // Chat
-        document.getElementById('btn-toggle-chat').addEventListener('click', () => {
-            const drawer = document.getElementById('chat-drawer');
-            drawer.classList.toggle('open');
+        // Video Call Controls
+        document.getElementById('btn-start-call').addEventListener('click', async () => {
+            if (this.mp.mediaCall || this.mp.localStream) {
+                this.mp.endCall();
+            } else {
+                try {
+                    await this.mp.startVideoCall();
+                    const callBtn = document.getElementById('btn-start-call');
+                    callBtn.classList.remove('btn-call-start');
+                    callBtn.classList.add('btn-call-active');
+                    callBtn.innerHTML = '<i class="fa-solid fa-phone-slash"></i>';
+                } catch (e) {
+                    this.showStatusNotification('Invite & connect to a friend first, or grant camera permissions.');
+                }
+            }
         });
 
-        document.getElementById('btn-close-chat').addEventListener('click', () => {
-            document.getElementById('chat-drawer').classList.remove('open');
+        document.getElementById('btn-toggle-cam').addEventListener('click', (e) => {
+            const active = this.mp.toggleCam();
+            e.currentTarget.classList.toggle('muted', !active);
         });
 
-        document.getElementById('chat-form').addEventListener('submit', (e) => {
+        document.getElementById('btn-toggle-mic').addEventListener('click', (e) => {
+            const active = this.mp.toggleMic();
+            e.currentTarget.classList.toggle('muted', !active);
+        });
+
+        // In-Panel Match Chat
+        document.getElementById('panel-chat-form').addEventListener('submit', (e) => {
             e.preventDefault();
-            const input = document.getElementById('chat-input');
+            const input = document.getElementById('panel-chat-input');
             const text = input.value.trim();
             if (text) {
                 this.appendChatMessage(text, 'me');
@@ -384,23 +430,19 @@ class ChessApp {
 
         // Update UI panels based on mode
         const aiWrapper = document.getElementById('ai-difficulty-wrapper');
-        const chatBtn = document.getElementById('btn-toggle-chat');
         if (mode === 'ai') {
-            aiWrapper.style.display = 'flex';
-            chatBtn.style.display = 'none';
+            if (aiWrapper) aiWrapper.style.display = 'flex';
             document.getElementById('name-black').textContent = 'Chess AI';
             document.getElementById('tag-black').textContent = 'Computer';
             this.playerColor = 'w';
         } else if (mode === 'online') {
-            aiWrapper.style.display = 'none';
-            chatBtn.style.display = 'flex';
+            if (aiWrapper) aiWrapper.style.display = 'none';
             document.getElementById('name-black').textContent = 'Remote Friend';
             document.getElementById('tag-black').textContent = 'Online Opponent';
             this.openInviteModal();
         } else {
             // Local
-            aiWrapper.style.display = 'none';
-            chatBtn.style.display = 'none';
+            if (aiWrapper) aiWrapper.style.display = 'none';
             document.getElementById('name-black').textContent = 'Black Player';
             document.getElementById('tag-black').textContent = 'Local Friend';
         }
@@ -731,25 +773,7 @@ class ChessApp {
     }
 
     updateHistoryUI() {
-        const container = document.getElementById('history-container');
-        container.innerHTML = '';
-        const history = this.chess.history({ verbose: true });
-
-        for (let i = 0; i < history.length; i += 2) {
-            const moveNum = Math.floor(i / 2) + 1;
-            const wMove = history[i] ? history[i].san : '';
-            const bMove = history[i + 1] ? history[i + 1].san : '';
-
-            const row = document.createElement('div');
-            row.className = 'history-row';
-            row.innerHTML = `
-                <span class="history-num">${moveNum}.</span>
-                <span class="history-white ${i === history.length - 1 ? 'history-last' : ''}">${wMove}</span>
-                <span class="history-black ${i + 1 === history.length - 1 ? 'history-last' : ''}">${bMove}</span>
-            `;
-            container.appendChild(row);
-        }
-        container.scrollTop = container.scrollHeight;
+        // Move history table removed in favor of live video call and match chat
     }
 
     updateCapturedUI() {
@@ -759,12 +783,13 @@ class ChessApp {
 
         const wBox = document.getElementById('captured-white');
         const bBox = document.getElementById('captured-black');
-        wBox.innerHTML = this.capturedPieces.w.map(p => pieceIcons[p] || '').join(' ');
-        bBox.innerHTML = this.capturedPieces.b.map(p => pieceIcons[p] || '').join(' ');
+        if (wBox) wBox.innerHTML = this.capturedPieces.w.map(p => pieceIcons[p] || '').join(' ');
+        if (bBox) bBox.innerHTML = this.capturedPieces.b.map(p => pieceIcons[p] || '').join(' ');
     }
 
     appendChatMessage(text, type) {
-        const box = document.getElementById('chat-messages');
+        const box = document.getElementById('panel-chat-messages') || document.getElementById('chat-messages');
+        if (!box) return;
         const msg = document.createElement('div');
         msg.className = `chat-msg ${type}`;
         msg.textContent = text;

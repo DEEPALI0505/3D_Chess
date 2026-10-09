@@ -114,10 +114,39 @@
 
             <!-- Right Sidebar: Move History & Game Controls -->
             <aside class="glass-panel interactive">
-                <div class="panel-title">Move History</div>
+                <!-- Live Video & Voice Call Box -->
+                <div class="panel-title"><i class="fa-solid fa-video"></i> Video & Voice Call</div>
+                <div class="video-container" id="video-container">
+                    <video id="remote-video" class="remote-video" autoplay playsinline></video>
+                    <video id="local-video" class="local-video" autoplay playsinline muted></video>
+                    <div class="video-placeholder" id="video-placeholder">
+                        <i class="fa-solid fa-video-slash"></i>
+                        <span id="call-status-label">Call Inactive</span>
+                    </div>
+                    <div class="video-controls">
+                        <button class="call-btn" id="btn-toggle-cam" title="Camera On/Off"><i class="fa-solid fa-video"></i></button>
+                        <button class="call-btn" id="btn-toggle-mic" title="Mic Mute/Unmute"><i class="fa-solid fa-microphone"></i></button>
+                        <button class="call-btn btn-call-start" id="btn-start-call" title="Start Video Call"><i class="fa-solid fa-phone"></i></button>
+                    </div>
+                </div>
 
-                <div class="history-container" id="history-container">
-                    <!-- Move rows will be rendered here dynamically -->
+                <!-- Embedded In-Panel Chat -->
+                <div class="panel-title"><i class="fa-solid fa-comments"></i> Match Chat</div>
+                <div class="panel-chat-box">
+                    <div class="panel-chat-messages" id="panel-chat-messages">
+                        <div class="chat-msg them">Welcome! Start video call or chat here.</div>
+                    </div>
+                    <div class="quick-emojis">
+                        <button class="emoji-btn" data-emoji="👍">👍</button>
+                        <button class="emoji-btn" data-emoji="🔥">🔥</button>
+                        <button class="emoji-btn" data-emoji="👑">👑</button>
+                        <button class="emoji-btn" data-emoji="♟️">♟️</button>
+                        <button class="emoji-btn" data-emoji="😮">😮</button>
+                    </div>
+                    <form class="panel-chat-input-row" id="panel-chat-form">
+                        <input type="text" id="panel-chat-input" placeholder="Type a message..." autocomplete="off">
+                        <button type="submit" title="Send"><i class="fa-solid fa-paper-plane"></i></button>
+                    </form>
                 </div>
 
                 <div class="controls-group">
@@ -152,10 +181,6 @@
                         <i class="fa-solid fa-camera"></i> Reset Camera
                     </button>
 
-                    <button class="btn-secondary" id="btn-toggle-chat" style="display: none;">
-                        <i class="fa-solid fa-comment-dots"></i> Match Chat
-                    </button>
-
                     <button class="btn-danger" id="btn-new-game">
                         <i class="fa-solid fa-play"></i> New Game
                     </button>
@@ -163,34 +188,6 @@
             </aside>
 
         </main>
-    </div>
-
-    <!-- Live In-game Chat Drawer -->
-    <div class="chat-drawer interactive" id="chat-drawer">
-        <div class="chat-header">
-            <span>Match Chat</span>
-            <button class="btn-icon" id="btn-close-chat" style="width: 28px; height: 28px;">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-        </div>
-        <div class="chat-messages" id="chat-messages">
-            <div class="chat-msg them">Welcome to the match! Good luck, have fun!</div>
-        </div>
-        <!-- Quick Emoji Bar -->
-        <div class="quick-emojis">
-            <button class="emoji-btn" data-emoji="👍">👍</button>
-            <button class="emoji-btn" data-emoji="🔥">🔥</button>
-            <button class="emoji-btn" data-emoji="😮">😮</button>
-            <button class="emoji-btn" data-emoji="👑">👑</button>
-            <button class="emoji-btn" data-emoji="♟️">♟️</button>
-            <button class="emoji-btn" data-emoji="👏">👏</button>
-        </div>
-        <form class="chat-input-bar" id="chat-form">
-            <input type="text" class="input-box" id="chat-input" placeholder="Type a message..." style="flex: 1;" autocomplete="off">
-            <button type="submit" class="btn-primary" style="padding: 8px 14px;">
-                <i class="fa-solid fa-paper-plane"></i>
-            </button>
-        </form>
     </div>
 
     <!-- Invite Friends / Join Room Modal -->

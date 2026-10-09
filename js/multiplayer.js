@@ -1,16 +1,20 @@
-// PeerJS P2P WebRTC Multiplayer Manager
-// Allows playing with friends anywhere in the world with zero server costs!
+// PeerJS P2P WebRTC Multiplayer Manager with Real-Time Video Call & Voice Chat
 
 class MultiplayerManager {
     constructor(callbacks) {
         this.callbacks = callbacks || {};
         this.peer = null;
         this.conn = null;
+        this.mediaCall = null;
+        this.localStream = null;
+        this.remoteStream = null;
         this.isHost = false;
         this.myPeerId = null;
-        this.myColor = 'w'; // Host defaults to white
-        this.opponentName = 'Opponent';
+        this.remotePeerId = null;
+        this.myColor = 'w';
         this.connected = false;
+        this.isAudioMuted = false;
+        this.isVideoMuted = false;
     }
 
     generateRoomCode() {
@@ -29,7 +33,6 @@ class MultiplayerManager {
 
         if (this.peer) this.peer.destroy();
 
-        // Connect to public PeerJS cloud broker
         this.peer = new Peer(roomCode, {
             debug: 1
         });
@@ -43,13 +46,15 @@ class MultiplayerManager {
 
         this.peer.on('connection', (connection) => {
             this.conn = connection;
+            this.remotePeerId = connection.peer;
             this.setupConnectionHandlers();
         });
+
+        this.setupMediaListeners();
 
         this.peer.on('error', (err) => {
             console.error('PeerJS error:', err);
             if (err.type === 'unavailable-id') {
-                // If room code taken, retry with new code
                 this.createRoom();
             } else if (this.callbacks.onError) {
                 this.callbacks.onError(err);
@@ -59,7 +64,8 @@ class MultiplayerManager {
 
     joinRoom(roomCode) {
         this.isHost = false;
-        this.myColor = 'b'; // Joiner plays black
+        this.myColor = 'b';
+        this.remotePeerId = roomCode;
 
         if (this.peer) this.peer.destroy();
 
@@ -75,6 +81,8 @@ class MultiplayerManager {
             this.setupConnectionHandlers();
         });
 
+        this.setupMediaListeners();
+
         this.peer.on('error', (err) => {
             console.error('PeerJS join error:', err);
             if (this.callbacks.onError) {
@@ -88,14 +96,15 @@ class MultiplayerManager {
 
         this.conn.on('open', () => {
             this.connected = true;
+            this.remotePeerId = this.conn.peer;
             if (this.callbacks.onConnected) {
                 this.callbacks.onConnected({
                     isHost: this.isHost,
-                    myColor: this.myColor
+                    myColor: this.myColor,
+                    remotePeerId: this.remotePeerId
                 });
             }
 
-            // If host, sync game settings (like time control)
             if (this.isHost && this.callbacks.getHostSettings) {
                 const settings = this.callbacks.getHostSettings();
                 this.send({
@@ -111,6 +120,7 @@ class MultiplayerManager {
 
         this.conn.on('close', () => {
             this.connected = false;
+            this.endCall();
             if (this.callbacks.onDisconnected) {
                 this.callbacks.onDisconnected();
             }
@@ -119,6 +129,123 @@ class MultiplayerManager {
         this.conn.on('error', (err) => {
             console.error('Connection data error:', err);
         });
+    }
+
+    // WebRTC Audio / Video Call Integration
+    setupMediaListeners() {
+        if (!this.peer) return;
+
+        this.peer.on('call', async (incomingCall) => {
+            this.mediaCall = incomingCall;
+            try {
+                if (!this.localStream) {
+                    this.localStream = await navigator.mediaDevices.getUserMedia({
+                        video: true,
+                        audio: true
+                    });
+                    if (this.callbacks.onLocalStream) {
+                        this.callbacks.onLocalStream(this.localStream);
+                    }
+                }
+                this.mediaCall.answer(this.localStream);
+                this.handleCallStream(this.mediaCall);
+            } catch (err) {
+                console.warn('Could not get local camera/mic to answer, answering audio only:', err);
+                try {
+                    this.localStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    this.mediaCall.answer(this.localStream);
+                    this.handleCallStream(this.mediaCall);
+                } catch (e2) {
+                    console.error('Cannot access media devices:', e2);
+                }
+            }
+        });
+    }
+
+    async startVideoCall() {
+        if (!this.peer || !this.remotePeerId) {
+            throw new Error('Not connected to a friend yet!');
+        }
+
+        try {
+            if (!this.localStream) {
+                this.localStream = await navigator.mediaDevices.getUserMedia({
+                    video: true,
+                    audio: true
+                });
+                if (this.callbacks.onLocalStream) {
+                    this.callbacks.onLocalStream(this.localStream);
+                }
+            }
+
+            this.mediaCall = this.peer.call(this.remotePeerId, this.localStream);
+            this.handleCallStream(this.mediaCall);
+            return true;
+        } catch (err) {
+            console.error('Failed to start video call:', err);
+            throw err;
+        }
+    }
+
+    handleCallStream(call) {
+        if (!call) return;
+
+        call.on('stream', (remoteStream) => {
+            this.remoteStream = remoteStream;
+            if (this.callbacks.onRemoteStream) {
+                this.callbacks.onRemoteStream(remoteStream);
+            }
+        });
+
+        call.on('close', () => {
+            this.remoteStream = null;
+            if (this.callbacks.onCallEnded) {
+                this.callbacks.onCallEnded();
+            }
+        });
+
+        call.on('error', (err) => {
+            console.error('MediaCall error:', err);
+        });
+    }
+
+    toggleMic() {
+        if (this.localStream) {
+            const audioTracks = this.localStream.getAudioTracks();
+            if (audioTracks.length > 0) {
+                this.isAudioMuted = !this.isAudioMuted;
+                audioTracks[0].enabled = !this.isAudioMuted;
+                return !this.isAudioMuted; // true = unmuted, false = muted
+            }
+        }
+        return false;
+    }
+
+    toggleCam() {
+        if (this.localStream) {
+            const videoTracks = this.localStream.getVideoTracks();
+            if (videoTracks.length > 0) {
+                this.isVideoMuted = !this.isVideoMuted;
+                videoTracks[0].enabled = !this.isVideoMuted;
+                return !this.isVideoMuted; // true = active, false = disabled
+            }
+        }
+        return false;
+    }
+
+    endCall() {
+        if (this.mediaCall) {
+            this.mediaCall.close();
+            this.mediaCall = null;
+        }
+        if (this.localStream) {
+            this.localStream.getTracks().forEach(track => track.stop());
+            this.localStream = null;
+        }
+        this.remoteStream = null;
+        if (this.callbacks.onCallEnded) {
+            this.callbacks.onCallEnded();
+        }
     }
 
     handleIncomingData(data) {
@@ -150,16 +277,6 @@ class MultiplayerManager {
                     this.callbacks.onOpponentResign();
                 }
                 break;
-            case 'rematch':
-                if (this.callbacks.onRematchRequest) {
-                    this.callbacks.onRematchRequest();
-                }
-                break;
-            case 'rematch_accepted':
-                if (this.callbacks.onRematchAccepted) {
-                    this.callbacks.onRematchAccepted();
-                }
-                break;
         }
     }
 
@@ -181,19 +298,8 @@ class MultiplayerManager {
         this.send({ type: 'emoji', emoji: emoji, sender: sender });
     }
 
-    sendResign() {
-        this.send({ type: 'resign' });
-    }
-
-    sendRematch() {
-        this.send({ type: 'rematch' });
-    }
-
-    sendRematchAccepted() {
-        this.send({ type: 'rematch_accepted' });
-    }
-
     disconnect() {
+        this.endCall();
         if (this.conn) this.conn.close();
         if (this.peer) this.peer.destroy();
         this.connected = false;
