@@ -41,9 +41,9 @@ class ChessApp {
         this.scene = new THREE.Scene();
         this.scene.background = new THREE.Color(0x0a0c10);
 
-        // Camera
-        this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
-        this.camera.position.set(0, 8.5, 9.5);
+        // Elevated Top-Perspective Camera (clear tactical view of all squares)
+        this.camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 100);
+        this.camera.position.set(0, 11.2, 6.4);
 
         // Renderer
         this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: 'high-performance' });
@@ -52,46 +52,51 @@ class ChessApp {
         this.renderer.shadowMap.enabled = true;
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        this.renderer.toneMappingExposure = 1.15;
+        this.renderer.toneMappingExposure = 1.20;
         this.container.appendChild(this.renderer.domElement);
 
         // OrbitControls
         this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
         this.controls.enableDamping = true;
         this.controls.dampingFactor = 0.05;
-        this.controls.maxPolarAngle = Math.PI / 2.05; // Don't go below table
+        this.controls.maxPolarAngle = Math.PI / 2.1;
         this.controls.minDistance = 4;
-        this.controls.maxDistance = 16;
+        this.controls.maxDistance = 18;
         this.controls.target.set(0, 0.2, 0);
 
-        // Studio Lighting
-        const ambient = new THREE.AmbientLight(0x94a3b8, 0.65);
+        // Studio Lighting: High Visibility & Rim Highlights
+        const ambient = new THREE.AmbientLight(0xffffff, 0.80);
         this.scene.add(ambient);
 
-        // Key light
-        const keyLight = new THREE.DirectionalLight(0xfffaed, 1.35);
-        keyLight.position.set(6, 12, 7);
+        // Main Warm Key Light
+        const keyLight = new THREE.DirectionalLight(0xfff7ea, 1.45);
+        keyLight.position.set(5, 14, 6);
         keyLight.castShadow = true;
         keyLight.shadow.mapSize.width = 2048;
         keyLight.shadow.mapSize.height = 2048;
         keyLight.shadow.camera.near = 0.5;
         keyLight.shadow.camera.far = 30;
-        const d = 6;
+        const d = 6.5;
         keyLight.shadow.camera.left = -d;
         keyLight.shadow.camera.right = d;
         keyLight.shadow.camera.top = d;
         keyLight.shadow.camera.bottom = -d;
-        keyLight.shadow.bias = -0.0004;
+        keyLight.shadow.bias = -0.0003;
         this.scene.add(keyLight);
 
-        // Cool Fill light
-        const fillLight = new THREE.DirectionalLight(0x60a5fa, 0.5);
-        fillLight.position.set(-7, 8, -6);
+        // Back Rim Light (critical for Black pieces edge-definition)
+        const rimLight = new THREE.DirectionalLight(0xf1f5f9, 1.25);
+        rimLight.position.set(-5, 13, -6.5);
+        this.scene.add(rimLight);
+
+        // Soft Side Fill Light
+        const fillLight = new THREE.DirectionalLight(0xa5b4fc, 0.45);
+        fillLight.position.set(7, 9, -2);
         this.scene.add(fillLight);
 
-        // Subtle center spot
-        const spot = new THREE.SpotLight(0xfffbeb, 0.8, 18, Math.PI / 4, 0.3);
-        spot.position.set(0, 10, 0);
+        // Center Board Spotlight for piece luster
+        const spot = new THREE.SpotLight(0xfffbeb, 0.7, 20, Math.PI / 3.8, 0.35);
+        spot.position.set(0, 11, 0);
         this.scene.add(spot);
 
         // Dark reflective floor
@@ -663,10 +668,10 @@ class ChessApp {
         this.updateHistoryUI();
     }
 
-    // Camera Views
+    // Camera Views (Elevated Top-Perspective)
     setCameraView(color) {
-        const targetZ = color === 'w' ? 9.5 : -9.5;
-        this.camera.position.set(0, 8.5, targetZ);
+        const targetZ = color === 'w' ? 6.4 : -6.4;
+        this.camera.position.set(0, 11.2, targetZ);
         this.camera.lookAt(0, 0, 0);
         this.controls.target.set(0, 0.2, 0);
     }
