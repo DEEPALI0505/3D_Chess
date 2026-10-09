@@ -72,6 +72,11 @@
             
             <!-- Left Sidebar: Players & Timers -->
             <aside class="glass-panel interactive">
+                <!-- New Game button placed above Player Profiles as requested -->
+                <button class="btn-danger" id="btn-new-game" style="width: 100%; justify-content: center; padding: 12px; font-size: 0.95rem;">
+                    <i class="fa-solid fa-play"></i> New Game
+                </button>
+
                 <div class="panel-title">Player Profiles</div>
 
                 <!-- White Player Card -->
@@ -112,7 +117,7 @@
                 </div>
             </aside>
 
-            <!-- Right Sidebar: Move History & Game Controls -->
+            <!-- Right Sidebar: Live Video & Voice Call & Match Settings -->
             <aside class="glass-panel interactive">
                 <!-- Live Video & Voice Call Box -->
                 <div class="panel-title"><i class="fa-solid fa-video"></i> Video & Voice Call</div>
@@ -128,25 +133,6 @@
                         <button class="call-btn" id="btn-toggle-mic" title="Mic Mute/Unmute"><i class="fa-solid fa-microphone"></i></button>
                         <button class="call-btn btn-call-start" id="btn-start-call" title="Start Video Call"><i class="fa-solid fa-phone"></i></button>
                     </div>
-                </div>
-
-                <!-- Embedded In-Panel Chat -->
-                <div class="panel-title"><i class="fa-solid fa-comments"></i> Match Chat</div>
-                <div class="panel-chat-box">
-                    <div class="panel-chat-messages" id="panel-chat-messages">
-                        <div class="chat-msg them">Welcome! Start video call or chat here.</div>
-                    </div>
-                    <div class="quick-emojis">
-                        <button class="emoji-btn" data-emoji="👍">👍</button>
-                        <button class="emoji-btn" data-emoji="🔥">🔥</button>
-                        <button class="emoji-btn" data-emoji="👑">👑</button>
-                        <button class="emoji-btn" data-emoji="♟️">♟️</button>
-                        <button class="emoji-btn" data-emoji="😮">😮</button>
-                    </div>
-                    <form class="panel-chat-input-row" id="panel-chat-form">
-                        <input type="text" id="panel-chat-input" placeholder="Type a message..." autocomplete="off">
-                        <button type="submit" title="Send"><i class="fa-solid fa-paper-plane"></i></button>
-                    </form>
                 </div>
 
                 <div class="controls-group">
@@ -168,26 +154,33 @@
                             <option value="0">Unlimited (No Timer)</option>
                         </select>
                     </div>
-
-                    <button class="btn-secondary" id="btn-undo">
-                        <i class="fa-solid fa-rotate-left"></i> Undo Move
-                    </button>
-
-                    <button class="btn-secondary" id="btn-flip-view">
-                        <i class="fa-solid fa-arrows-rotate"></i> Flip View
-                    </button>
-
-                    <button class="btn-secondary" id="btn-reset-cam">
-                        <i class="fa-solid fa-camera"></i> Reset Camera
-                    </button>
-
-                    <button class="btn-danger" id="btn-new-game">
-                        <i class="fa-solid fa-play"></i> New Game
-                    </button>
                 </div>
             </aside>
 
         </main>
+    </div>
+
+    <!-- Floating Air-Glass Corner Chat HUD (See-through floating in air) -->
+    <div class="floating-corner-chat interactive" id="floating-chat">
+        <div class="air-chat-header">
+            <span class="air-chat-title"><i class="fa-solid fa-comments"></i> Match Chat</span>
+        </div>
+        <div class="air-chat-messages" id="panel-chat-messages">
+            <div class="air-msg them">Welcome! Chat floating in air.</div>
+        </div>
+        <!-- Corner Emojis Bar -->
+        <div class="air-chat-emojis">
+            <button class="emoji-btn" data-emoji="👍">👍</button>
+            <button class="emoji-btn" data-emoji="🔥">🔥</button>
+            <button class="emoji-btn" data-emoji="👑">👑</button>
+            <button class="emoji-btn" data-emoji="♟️">♟️</button>
+            <button class="emoji-btn" data-emoji="😮">😮</button>
+        </div>
+        <!-- Transparent Air Input -->
+        <form class="air-chat-input-bar" id="panel-chat-form">
+            <input type="text" id="panel-chat-input" placeholder="Type a message..." autocomplete="off">
+            <button type="submit" title="Send"><i class="fa-solid fa-paper-plane"></i></button>
+        </form>
     </div>
 
     <!-- Invite Friends / Join Room Modal -->

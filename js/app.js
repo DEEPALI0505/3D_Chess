@@ -321,10 +321,7 @@ class ChessApp {
             }
         });
 
-        // Controls
-        document.getElementById('btn-undo').addEventListener('click', () => this.undoMove());
-        document.getElementById('btn-flip-view').addEventListener('click', () => this.toggleCameraView());
-        document.getElementById('btn-reset-cam').addEventListener('click', () => this.resetCamera());
+        // New Game Control (Now placed above player profiles)
         document.getElementById('btn-new-game').addEventListener('click', () => this.setupNewGame());
         
         // Audio Toggle
