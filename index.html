@@ -71,88 +71,104 @@
         <main class="workspace">
             
             <!-- Left Sidebar: Players & Timers -->
-            <aside class="glass-panel interactive">
-                <!-- New Game button placed above Player Profiles as requested -->
-                <button class="btn-danger" id="btn-new-game" style="width: 100%; justify-content: center; padding: 12px; font-size: 0.95rem;">
-                    <i class="fa-solid fa-play"></i> New Game
-                </button>
-
-                <div class="panel-title">Player Profiles</div>
-
-                <!-- White Player Card -->
-                <div class="player-card active-turn" id="card-white">
-                    <div class="player-header">
-                        <div class="avatar" style="color: #f1f5f9;">♔</div>
-                        <div class="player-meta">
-                            <div class="player-name" id="name-white">White Player</div>
-                            <div class="player-tag" id="tag-white">You (Playing White)</div>
-                        </div>
-                    </div>
-                    <div class="chess-clock">
-                        <span class="clock-label">Timer</span>
-                        <span class="clock-time" id="timer-white">10:00</span>
-                    </div>
+            <aside class="glass-panel interactive sidebar-left" id="sidebar-left">
+                <!-- Top action row with New Game & Minimize toggle -->
+                <div class="sidebar-top-row">
+                    <button class="btn-danger btn-compact" id="btn-new-game" title="Start New Game">
+                        <i class="fa-solid fa-play"></i> New Game
+                    </button>
+                    <button class="btn-minimize" id="btn-toggle-left-sidebar" title="Minimize / Expand Panel">
+                        <i class="fa-solid fa-chevron-left" id="icon-toggle-left"></i>
+                    </button>
                 </div>
 
-                <!-- Black Player Card -->
-                <div class="player-card" id="card-black">
-                    <div class="player-header">
-                        <div class="avatar" style="color: #64748b;">♚</div>
-                        <div class="player-meta">
-                            <div class="player-name" id="name-black">Stockfish AI</div>
-                            <div class="player-tag" id="tag-black">Computer (Medium)</div>
+                <!-- Collapsible content -->
+                <div class="sidebar-collapsible" id="left-sidebar-content">
+                    <div class="panel-title" style="margin-top: 4px;">Player Profiles</div>
+
+                    <!-- White Player Card -->
+                    <div class="player-card active-turn" id="card-white">
+                        <div class="player-header">
+                            <div class="avatar" style="color: #f1f5f9;">♔</div>
+                            <div class="player-meta">
+                                <div class="player-name" id="name-white">White Player</div>
+                                <div class="player-tag" id="tag-white">You (Playing White)</div>
+                            </div>
+                        </div>
+                        <div class="chess-clock">
+                            <span class="clock-label">Timer</span>
+                            <span class="clock-time" id="timer-white">10:00</span>
                         </div>
                     </div>
-                    <div class="chess-clock">
-                        <span class="clock-label">Timer</span>
-                        <span class="clock-time" id="timer-black">10:00</span>
-                    </div>
-                </div>
 
-                <!-- Captured Pieces Tray -->
-                <div class="captured-box">
-                    <div class="panel-title" style="margin-bottom: 8px;">Captured Pieces</div>
-                    <div class="captured-list" id="captured-white"></div>
-                    <div class="captured-list" id="captured-black" style="margin-top: 6px;"></div>
+                    <!-- Black Player Card -->
+                    <div class="player-card" id="card-black">
+                        <div class="player-header">
+                            <div class="avatar" style="color: #64748b;">♚</div>
+                            <div class="player-meta">
+                                <div class="player-name" id="name-black">Stockfish AI</div>
+                                <div class="player-tag" id="tag-black">Computer (Medium)</div>
+                            </div>
+                        </div>
+                        <div class="chess-clock">
+                            <span class="clock-label">Timer</span>
+                            <span class="clock-time" id="timer-black">10:00</span>
+                        </div>
+                    </div>
+
+                    <!-- Captured Pieces Tray -->
+                    <div class="captured-box">
+                        <div class="panel-title" style="margin-bottom: 4px;">Captured Pieces</div>
+                        <div class="captured-list" id="captured-white"></div>
+                        <div class="captured-list" id="captured-black" style="margin-top: 4px;"></div>
+                    </div>
                 </div>
             </aside>
 
             <!-- Right Sidebar: Live Video & Voice Call & Match Settings -->
-            <aside class="glass-panel interactive">
-                <!-- Live Video & Voice Call Box -->
-                <div class="panel-title"><i class="fa-solid fa-video"></i> Video & Voice Call</div>
-                <div class="video-container" id="video-container">
-                    <video id="remote-video" class="remote-video" autoplay playsinline></video>
-                    <video id="local-video" class="local-video" autoplay playsinline muted></video>
-                    <div class="video-placeholder" id="video-placeholder">
-                        <i class="fa-solid fa-video-slash"></i>
-                        <span id="call-status-label">Call Inactive</span>
-                    </div>
-                    <div class="video-controls">
-                        <button class="call-btn" id="btn-toggle-cam" title="Camera On/Off"><i class="fa-solid fa-video"></i></button>
-                        <button class="call-btn" id="btn-toggle-mic" title="Mic Mute/Unmute"><i class="fa-solid fa-microphone"></i></button>
-                        <button class="call-btn btn-call-start" id="btn-start-call" title="Start Video Call"><i class="fa-solid fa-phone"></i></button>
-                    </div>
+            <aside class="glass-panel interactive sidebar-right" id="sidebar-right">
+                <div class="sidebar-top-row" style="justify-content: space-between;">
+                    <span class="panel-title" style="margin: 0;"><i class="fa-solid fa-video"></i> Video & Call</span>
+                    <button class="btn-minimize" id="btn-toggle-right-sidebar" title="Minimize / Expand Panel">
+                        <i class="fa-solid fa-chevron-right" id="icon-toggle-right"></i>
+                    </button>
                 </div>
 
-                <div class="controls-group">
-                    <div class="select-wrapper" id="ai-difficulty-wrapper">
-                        <label class="panel-title">AI Difficulty</label>
-                        <select class="select-input" id="select-difficulty">
-                            <option value="easy">Casual (Easy)</option>
-                            <option value="medium" selected>Tactician (Medium)</option>
-                            <option value="hard">Grandmaster (Hard)</option>
-                        </select>
+                <!-- Collapsible content -->
+                <div class="sidebar-collapsible" id="right-sidebar-content">
+                    <div class="video-container" id="video-container">
+                        <video id="remote-video" class="remote-video" autoplay playsinline></video>
+                        <video id="local-video" class="local-video" autoplay playsinline muted></video>
+                        <div class="video-placeholder" id="video-placeholder">
+                            <i class="fa-solid fa-video-slash"></i>
+                            <span id="call-status-label">Call Inactive</span>
+                        </div>
+                        <div class="video-controls">
+                            <button class="call-btn" id="btn-toggle-cam" title="Camera On/Off"><i class="fa-solid fa-video"></i></button>
+                            <button class="call-btn" id="btn-toggle-mic" title="Mic Mute/Unmute"><i class="fa-solid fa-microphone"></i></button>
+                            <button class="call-btn btn-call-start" id="btn-start-call" title="Start Video Call"><i class="fa-solid fa-phone"></i></button>
+                        </div>
                     </div>
 
-                    <div class="select-wrapper" id="time-control-wrapper">
-                        <label class="panel-title">Time Control</label>
-                        <select class="select-input" id="select-time">
-                            <option value="60">1 Min (Bullet)</option>
-                            <option value="180">3 Min (Blitz)</option>
-                            <option value="600" selected>10 Min (Rapid)</option>
-                            <option value="0">Unlimited (No Timer)</option>
-                        </select>
+                    <div class="controls-group">
+                        <div class="select-wrapper" id="ai-difficulty-wrapper">
+                            <label class="panel-title">AI Difficulty</label>
+                            <select class="select-input" id="select-difficulty">
+                                <option value="easy">Casual (Easy)</option>
+                                <option value="medium" selected>Tactician (Medium)</option>
+                                <option value="hard">Grandmaster (Hard)</option>
+                            </select>
+                        </div>
+
+                        <div class="select-wrapper" id="time-control-wrapper">
+                            <label class="panel-title">Time Control</label>
+                            <select class="select-input" id="select-time">
+                                <option value="60">1 Min (Bullet)</option>
+                                <option value="180">3 Min (Blitz)</option>
+                                <option value="600" selected>10 Min (Rapid)</option>
+                                <option value="0">Unlimited (No Timer)</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </aside>

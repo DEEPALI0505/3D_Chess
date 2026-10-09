@@ -184,29 +184,123 @@ body {
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 18px;
+    border-radius: 16px;
     box-shadow: 0 12px 36px rgba(0, 0, 0, 0.3);
-    padding: 16px;
+    padding: 10px 12px;
     display: flex;
     flex-direction: column;
-    width: 305px;
     max-height: calc(100vh - 100px);
     overflow-y: auto;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s ease, min-width 0.3s ease;
 }
 
 .glass-panel::-webkit-scrollbar {
-    width: 5px;
+    width: 4px;
 }
 .glass-panel::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.12);
     border-radius: 4px;
 }
 
-/* Left Sidebar - Player Profiles & Clocks */
+/* Sidebar Specific Widths - Compact & Sleek */
+.sidebar-left {
+    width: 220px;
+    min-width: 220px;
+}
+
+.sidebar-right {
+    width: 225px;
+    min-width: 225px;
+}
+
+/* Sidebar Top Row with Minimize Button */
+.sidebar-top-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    margin-bottom: 6px;
+}
+
+.btn-compact {
+    flex: 1;
+    padding: 7px 10px !important;
+    font-size: 0.82rem !important;
+    border-radius: 8px !important;
+    justify-content: center;
+    height: 32px;
+    letter-spacing: 0.3px;
+}
+
+.btn-minimize {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-muted);
+    border-radius: 8px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.btn-minimize:hover {
+    background: rgba(255, 255, 255, 0.16);
+    color: #fff;
+    transform: scale(1.05);
+}
+
+.sidebar-collapsible {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    transition: opacity 0.2s ease;
+}
+
+/* Minimized Sidebar States */
+.sidebar-left.is-minimized {
+    width: 48px !important;
+    min-width: 48px !important;
+    padding: 10px 8px !important;
+    overflow: hidden;
+}
+
+.sidebar-left.is-minimized .sidebar-collapsible,
+.sidebar-left.is-minimized #btn-new-game {
+    display: none !important;
+}
+
+.sidebar-left.is-minimized .sidebar-top-row {
+    justify-content: center;
+    margin-bottom: 0;
+}
+
+.sidebar-right.is-minimized {
+    width: 48px !important;
+    min-width: 48px !important;
+    padding: 10px 8px !important;
+    overflow: hidden;
+}
+
+.sidebar-right.is-minimized .sidebar-collapsible,
+.sidebar-right.is-minimized .panel-title {
+    display: none !important;
+}
+
+.sidebar-right.is-minimized .sidebar-top-row {
+    justify-content: center;
+    margin-bottom: 0;
+}
+
+/* Compact Left Sidebar - Player Profiles & Clocks */
 .panel-title {
-    font-size: 0.78rem;
+    font-size: 0.72rem;
     text-transform: uppercase;
-    letter-spacing: 1.2px;
+    letter-spacing: 1.1px;
     color: var(--text-muted);
     font-weight: 700;
 }
@@ -216,51 +310,60 @@ body {
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 14px;
-    padding: 14px;
+    border-radius: 10px;
+    padding: 8px 10px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 6px;
     transition: all 0.3s ease;
 }
 
 .player-card.active-turn {
     border-color: var(--accent-emerald);
-    box-shadow: 0 0 16px rgba(16, 185, 129, 0.2);
+    box-shadow: 0 0 14px rgba(16, 185, 129, 0.2);
     background: rgba(16, 185, 129, 0.05);
 }
 
 .player-header {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
 }
 
 .avatar {
-    width: 42px;
-    height: 42px;
-    border-radius: 12px;
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
     background: rgba(255, 255, 255, 0.06);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 20px;
-    border: 1.5px solid rgba(255, 255, 255, 0.1);
+    font-size: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    flex-shrink: 0;
 }
 
 .player-meta {
     flex: 1;
+    overflow: hidden;
 }
 
 .player-name {
-    font-weight: 700;
-    font-size: 0.95rem;
+    font-weight: 600;
+    font-size: 0.82rem;
     color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.2;
 }
 
 .player-tag {
-    font-size: 0.75rem;
+    font-size: 0.68rem;
     color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .chess-clock {
@@ -268,21 +371,21 @@ body {
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
     border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 10px;
-    padding: 8px 12px;
+    border-radius: 8px;
+    padding: 4px 8px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
 .clock-label {
-    font-size: 0.75rem;
+    font-size: 0.68rem;
     color: var(--text-muted);
 }
 
 .clock-time {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 1.35rem;
+    font-size: 1.05rem;
     font-weight: 700;
     color: #cbd5e1;
 }
@@ -292,35 +395,35 @@ body {
     text-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
 }
 
-/* Captured Pieces Tray */
+/* Compact Captured Pieces Tray */
 .captured-box {
     background: rgba(255, 255, 255, 0.02);
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
     border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 12px;
-    padding: 12px;
+    border-radius: 10px;
+    padding: 8px 10px;
 }
 
 .captured-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
-    min-height: 28px;
-    font-size: 18px;
+    gap: 4px;
+    min-height: 18px;
+    font-size: 14px;
     color: var(--text-secondary);
 }
 
-/* Right Sidebar - Live Video Call & In-Panel Chat */
+/* Right Sidebar - Compact Live Video Call */
 .video-container {
     position: relative;
     width: 100%;
-    height: 150px;
+    height: 115px;
     background: rgba(10, 12, 16, 0.25);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
     border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 14px;
+    border-radius: 12px;
     overflow: hidden;
     display: flex;
     align-items: center;

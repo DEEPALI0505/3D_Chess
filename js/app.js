@@ -323,6 +323,31 @@ class ChessApp {
 
         // New Game Control (Now placed above player profiles)
         document.getElementById('btn-new-game').addEventListener('click', () => this.setupNewGame());
+
+        // Sidebar Minimize / Expand Toggles
+        const btnToggleLeft = document.getElementById('btn-toggle-left-sidebar');
+        if (btnToggleLeft) {
+            btnToggleLeft.addEventListener('click', () => {
+                const sidebar = document.getElementById('sidebar-left');
+                const isMini = sidebar.classList.toggle('is-minimized');
+                const icon = document.getElementById('icon-toggle-left');
+                if (icon) {
+                    icon.className = isMini ? 'fa-solid fa-chevron-right' : 'fa-solid fa-chevron-left';
+                }
+            });
+        }
+
+        const btnToggleRight = document.getElementById('btn-toggle-right-sidebar');
+        if (btnToggleRight) {
+            btnToggleRight.addEventListener('click', () => {
+                const sidebar = document.getElementById('sidebar-right');
+                const isMini = sidebar.classList.toggle('is-minimized');
+                const icon = document.getElementById('icon-toggle-right');
+                if (icon) {
+                    icon.className = isMini ? 'fa-solid fa-chevron-left' : 'fa-solid fa-chevron-right';
+                }
+            });
+        }
         
         // Audio Toggle
         document.getElementById('btn-mute').addEventListener('click', (e) => {
