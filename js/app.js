@@ -89,16 +89,14 @@ class ChessApp {
         fillLight.position.set(-4, 14, -8);
         this.scene.add(fillLight);
 
-        // Dark matte floor (no reflections)
-        const floorGeo = new THREE.PlaneGeometry(60, 60);
-        const floorMat = new THREE.MeshStandardMaterial({
-            color: 0x080a0f,
-            roughness: 0.85,
-            metalness: 0.0
+        // Seamless Shadow Receiver (Zero color difference or horizon line!)
+        const floorGeo = new THREE.PlaneGeometry(80, 80);
+        const floorMat = new THREE.ShadowMaterial({
+            opacity: 0.45
         });
         const floor = new THREE.Mesh(floorGeo, floorMat);
         floor.rotation.x = -Math.PI / 2;
-        floor.position.y = -0.4;
+        floor.position.y = -0.19;
         floor.receiveShadow = true;
         this.scene.add(floor);
 
