@@ -2,7 +2,7 @@
 
 :root {
     --bg-dark: #0a0c10;
-    --card-bg: rgba(18, 22, 30, 0.75);
+    --card-bg: rgba(10, 12, 16, 0.25);
     --card-border: rgba(255, 255, 255, 0.08);
     --accent-emerald: #10b981;
     --accent-gold: #d4af37;
@@ -57,18 +57,18 @@ body {
     pointer-events: auto;
 }
 
-/* Top Navbar */
+/* Top Navbar - Transparent Air-Glass Effect */
 .top-nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: var(--card-bg);
+    background: rgba(10, 12, 16, 0.25);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--card-border);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 16px;
     padding: 10px 24px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
 }
 
 .brand {
@@ -178,15 +178,15 @@ body {
     padding-top: 16px;
 }
 
-/* Glass Sidebar Panels */
+/* Glass Sidebar Panels - Transparent Air-Glass Effect */
 .glass-panel {
-    background: var(--card-bg);
+    background: rgba(10, 12, 16, 0.22);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--card-border);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 18px;
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
-    padding: 18px;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.3);
+    padding: 16px;
     display: flex;
     flex-direction: column;
     width: 305px;
@@ -204,7 +204,7 @@ body {
 
 /* Left Sidebar - Player Profiles & Clocks */
 .panel-title {
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     text-transform: uppercase;
     letter-spacing: 1.2px;
     color: var(--text-muted);
@@ -212,19 +212,22 @@ body {
 }
 
 .player-card {
-    background: rgba(0, 0, 0, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
     border-radius: 14px;
     padding: 14px;
     display: flex;
     flex-direction: column;
     gap: 10px;
-    transition: border-color 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .player-card.active-turn {
     border-color: var(--accent-emerald);
     box-shadow: 0 0 16px rgba(16, 185, 129, 0.2);
+    background: rgba(16, 185, 129, 0.05);
 }
 
 .player-header {
@@ -237,12 +240,12 @@ body {
     width: 42px;
     height: 42px;
     border-radius: 12px;
-    background: #1e293b;
+    background: rgba(255, 255, 255, 0.06);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 20px;
-    border: 2px solid rgba(255, 255, 255, 0.1);
+    border: 1.5px solid rgba(255, 255, 255, 0.1);
 }
 
 .player-meta {
@@ -261,8 +264,10 @@ body {
 }
 
 .chess-clock {
-    background: rgba(0, 0, 0, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
     border-radius: 10px;
     padding: 8px 12px;
     display: flex;
@@ -289,7 +294,10 @@ body {
 
 /* Captured Pieces Tray */
 .captured-box {
-    background: rgba(0, 0, 0, 0.25);
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 12px;
     padding: 12px;
 }
@@ -308,7 +316,9 @@ body {
     position: relative;
     width: 100%;
     height: 150px;
-    background: #0d1117;
+    background: rgba(10, 12, 16, 0.25);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 14px;
     overflow: hidden;
