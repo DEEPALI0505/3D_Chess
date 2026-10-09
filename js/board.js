@@ -34,14 +34,14 @@ class ChessBoard3D {
         }
         this.whiteTex = new THREE.CanvasTexture(cWhite);
 
-        // Natural Dark Walnut / Charcoal Canvas Texture
+        // Pure Deep Black Canvas Texture for Dark Cubes (Zero Grey)
         const cBlack = document.createElement('canvas');
         cBlack.width = 512;
         cBlack.height = 512;
         const ctxB = cBlack.getContext('2d');
-        ctxB.fillStyle = '#343840';
+        ctxB.fillStyle = '#14161a';
         ctxB.fillRect(0, 0, 512, 512);
-        ctxB.strokeStyle = 'rgba(70, 75, 85, 0.4)';
+        ctxB.strokeStyle = 'rgba(40, 45, 55, 0.4)';
         ctxB.lineWidth = 1.5;
         for (let i = 0; i < 8; i++) {
             ctxB.beginPath();
@@ -60,22 +60,22 @@ class ChessBoard3D {
 
         this.blackSquareMat = new THREE.MeshStandardMaterial({
             map: this.blackTex,
-            roughness: 0.55,
-            metalness: 0.0
-        });
-
-        // Elegant Walnut Wood Frame Border
-        this.borderMat = new THREE.MeshStandardMaterial({
-            color: 0x221f1c,
-            roughness: 0.60,
-            metalness: 0.0
-        });
-
-        // Inlay Rim Trim (Warm Bronze)
-        this.trimMat = new THREE.MeshStandardMaterial({
-            color: 0x8a7250,
             roughness: 0.50,
-            metalness: 0.2
+            metalness: 0.05
+        });
+
+        // Pure Obsidian Black Frame Border (Zero Brown)
+        this.borderMat = new THREE.MeshStandardMaterial({
+            color: 0x0c0e12,
+            roughness: 0.38,
+            metalness: 0.1
+        });
+
+        // Sleek Dark Gunmetal Trim Inlay (Zero Brown)
+        this.trimMat = new THREE.MeshStandardMaterial({
+            color: 0x1a1e24,
+            roughness: 0.28,
+            metalness: 0.35
         });
 
         // Soft Green Move Target Marker
@@ -176,8 +176,7 @@ class ChessBoard3D {
         const canvas = document.createElement('canvas');
         canvas.width = 128;
         canvas.height = 128;
-        const ctx = canvas.getContext('2d');
-        ctx.fillStyle = '#a8a29e';
+        ctx.fillStyle = '#cbd5e1';
         ctx.font = '600 64px Inter, sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
