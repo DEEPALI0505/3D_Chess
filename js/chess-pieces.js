@@ -229,18 +229,11 @@ class ChessPieceFactory {
         ];
         const body = this.createLathePiece(pts, mat);
 
-        // Tapered Mitre Head
+        // Tapered Mitre Head (Smooth, clean Staunton profile)
         const mitreGeo = new THREE.SphereGeometry(0.20, 28, 28);
         mitreGeo.scale(0.85, 1.48, 0.85);
         const mitre = new THREE.Mesh(mitreGeo, mat);
         mitre.position.y = 1.08;
-
-        // Distinct Deep Slit Cut
-        const slitGeo = new THREE.BoxGeometry(0.05, 0.24, 0.26);
-        slitGeo.rotateZ(0.38);
-        const slitMat = new THREE.MeshBasicMaterial({ color: 0x050505 });
-        const slit = new THREE.Mesh(slitGeo, slitMat);
-        slit.position.set(0.11, 1.15, 0);
 
         // Top Ball Finial
         const ballGeo = new THREE.SphereGeometry(0.065, 20, 20);
@@ -250,7 +243,6 @@ class ChessPieceFactory {
         const group = new THREE.Group();
         group.add(body);
         group.add(mitre);
-        group.add(slit);
         group.add(ball);
         return group;
     }
