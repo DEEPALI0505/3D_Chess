@@ -41,9 +41,9 @@ class ChessApp {
         this.scene = new THREE.Scene();
         this.scene.background = new THREE.Color(0x0a0c10);
 
-        // Elevated Top-Perspective Camera (clear tactical view of all squares)
-        this.camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 100);
-        this.camera.position.set(0, 11.2, 6.4);
+        // Natural 3D Perspective Camera (shows full piece bodies and board layout)
+        this.camera = new THREE.PerspectiveCamera(44, window.innerWidth / window.innerHeight, 0.1, 100);
+        this.camera.position.set(0, 8.2, 7.8);
 
         // Renderer
         this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: 'high-performance' });
@@ -52,25 +52,25 @@ class ChessApp {
         this.renderer.shadowMap.enabled = true;
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        this.renderer.toneMappingExposure = 1.20;
+        this.renderer.toneMappingExposure = 1.0; // Natural, balanced exposure
         this.container.appendChild(this.renderer.domElement);
 
         // OrbitControls
         this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
         this.controls.enableDamping = true;
         this.controls.dampingFactor = 0.05;
-        this.controls.maxPolarAngle = Math.PI / 2.1;
-        this.controls.minDistance = 4;
+        this.controls.maxPolarAngle = Math.PI / 2.15;
+        this.controls.minDistance = 3.5;
         this.controls.maxDistance = 18;
-        this.controls.target.set(0, 0.2, 0);
+        this.controls.target.set(0, 0.35, 0);
 
-        // Studio Lighting: High Visibility & Rim Highlights
-        const ambient = new THREE.AmbientLight(0xffffff, 0.80);
+        // Soft, Diffused Studio Lighting (No harsh white glare)
+        const ambient = new THREE.AmbientLight(0xfdfbf7, 0.95);
         this.scene.add(ambient);
 
-        // Main Warm Key Light
-        const keyLight = new THREE.DirectionalLight(0xfff7ea, 1.45);
-        keyLight.position.set(5, 14, 6);
+        // Gentle Key Light (Soft warm shadow caster)
+        const keyLight = new THREE.DirectionalLight(0xfff5ea, 0.70);
+        keyLight.position.set(4, 16, 8);
         keyLight.castShadow = true;
         keyLight.shadow.mapSize.width = 2048;
         keyLight.shadow.mapSize.height = 2048;
@@ -84,27 +84,17 @@ class ChessApp {
         keyLight.shadow.bias = -0.0003;
         this.scene.add(keyLight);
 
-        // Back Rim Light (critical for Black pieces edge-definition)
-        const rimLight = new THREE.DirectionalLight(0xf1f5f9, 1.25);
-        rimLight.position.set(-5, 13, -6.5);
-        this.scene.add(rimLight);
-
-        // Soft Side Fill Light
-        const fillLight = new THREE.DirectionalLight(0xa5b4fc, 0.45);
-        fillLight.position.set(7, 9, -2);
+        // Soft Back Fill Light (subtle edge definition)
+        const fillLight = new THREE.DirectionalLight(0xe2e8f0, 0.55);
+        fillLight.position.set(-4, 14, -8);
         this.scene.add(fillLight);
 
-        // Center Board Spotlight for piece luster
-        const spot = new THREE.SpotLight(0xfffbeb, 0.7, 20, Math.PI / 3.8, 0.35);
-        spot.position.set(0, 11, 0);
-        this.scene.add(spot);
-
-        // Dark reflective floor
+        // Dark matte floor (no reflections)
         const floorGeo = new THREE.PlaneGeometry(60, 60);
         const floorMat = new THREE.MeshStandardMaterial({
-            color: 0x050608,
-            roughness: 0.4,
-            metalness: 0.6
+            color: 0x080a0f,
+            roughness: 0.85,
+            metalness: 0.0
         });
         const floor = new THREE.Mesh(floorGeo, floorMat);
         floor.rotation.x = -Math.PI / 2;
@@ -668,12 +658,12 @@ class ChessApp {
         this.updateHistoryUI();
     }
 
-    // Camera Views (Elevated Top-Perspective)
+    // Camera Views (Natural 3D Perspective)
     setCameraView(color) {
-        const targetZ = color === 'w' ? 6.4 : -6.4;
-        this.camera.position.set(0, 11.2, targetZ);
+        const targetZ = color === 'w' ? 7.8 : -7.8;
+        this.camera.position.set(0, 8.2, targetZ);
         this.camera.lookAt(0, 0, 0);
-        this.controls.target.set(0, 0.2, 0);
+        this.controls.target.set(0, 0.35, 0);
     }
 
     toggleCameraView() {

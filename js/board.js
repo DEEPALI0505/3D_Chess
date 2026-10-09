@@ -1,4 +1,4 @@
-// 3D Chess Board Builder with Procedural High-Contrast Marble Textures
+// 3D Chess Board Builder - Natural Wood/Marble with Matte Glare-Free Shading
 
 class ChessBoard3D {
     constructor(scene) {
@@ -16,84 +16,87 @@ class ChessBoard3D {
     }
 
     initTextures() {
-        // High Contrast White Marble Texture (Warm Ivory Carrara)
+        // Natural Light Maple / Warm Ivory Canvas Texture
         const cWhite = document.createElement('canvas');
         cWhite.width = 512;
         cWhite.height = 512;
         const ctxW = cWhite.getContext('2d');
-        ctxW.fillStyle = '#f7f2e7';
+        ctxW.fillStyle = '#efe5d5';
         ctxW.fillRect(0, 0, 512, 512);
-        ctxW.strokeStyle = 'rgba(180, 168, 150, 0.35)';
-        ctxW.lineWidth = 2.5;
-        for (let i = 0; i < 6; i++) {
+        // Subtle wood grain
+        ctxW.strokeStyle = 'rgba(215, 200, 180, 0.4)';
+        ctxW.lineWidth = 1.5;
+        for (let i = 0; i < 8; i++) {
             ctxW.beginPath();
-            ctxW.moveTo(Math.random() * 512, 0);
-            ctxW.bezierCurveTo(Math.random() * 512, 170, Math.random() * 512, 340, Math.random() * 512, 512);
+            ctxW.moveTo(0, i * 64 + Math.random() * 20);
+            ctxW.lineTo(512, i * 64 + Math.random() * 20);
             ctxW.stroke();
         }
         this.whiteTex = new THREE.CanvasTexture(cWhite);
 
-        // High Contrast Black Marble Texture (Rich Charcoal Obsidian)
+        // Natural Dark Walnut / Charcoal Canvas Texture
         const cBlack = document.createElement('canvas');
         cBlack.width = 512;
         cBlack.height = 512;
         const ctxB = cBlack.getContext('2d');
-        ctxB.fillStyle = '#1e2229';
+        ctxB.fillStyle = '#343840';
         ctxB.fillRect(0, 0, 512, 512);
-        ctxB.strokeStyle = 'rgba(70, 80, 95, 0.45)';
-        ctxB.lineWidth = 2.5;
-        for (let i = 0; i < 6; i++) {
+        ctxB.strokeStyle = 'rgba(70, 75, 85, 0.4)';
+        ctxB.lineWidth = 1.5;
+        for (let i = 0; i < 8; i++) {
             ctxB.beginPath();
-            ctxB.moveTo(0, Math.random() * 512);
-            ctxB.bezierCurveTo(170, Math.random() * 512, 340, Math.random() * 512, 512, Math.random() * 512);
+            ctxB.moveTo(0, i * 64 + Math.random() * 20);
+            ctxB.lineTo(512, i * 64 + Math.random() * 20);
             ctxB.stroke();
         }
         this.blackTex = new THREE.CanvasTexture(cBlack);
 
-        // Materials
+        // Zero metalness, high roughness = No harsh white glare / hotspot reflections!
         this.whiteSquareMat = new THREE.MeshStandardMaterial({
             map: this.whiteTex,
-            roughness: 0.18,
-            metalness: 0.04
+            roughness: 0.58,
+            metalness: 0.0
         });
 
         this.blackSquareMat = new THREE.MeshStandardMaterial({
             map: this.blackTex,
-            roughness: 0.22,
-            metalness: 0.12
+            roughness: 0.55,
+            metalness: 0.0
         });
 
+        // Elegant Walnut Wood Frame Border
         this.borderMat = new THREE.MeshStandardMaterial({
-            color: 0x141820,
-            roughness: 0.28,
-            metalness: 0.35
+            color: 0x221f1c,
+            roughness: 0.60,
+            metalness: 0.0
         });
 
-        this.goldTrimMat = new THREE.MeshStandardMaterial({
-            color: 0xe0b246,
-            roughness: 0.22,
-            metalness: 0.88
+        // Inlay Rim Trim (Warm Bronze)
+        this.trimMat = new THREE.MeshStandardMaterial({
+            color: 0x8a7250,
+            roughness: 0.50,
+            metalness: 0.2
         });
 
-        // Glowing Move Indicator Material (Neon Emerald)
+        // Soft Green Move Target Marker
         this.validMoveMat = new THREE.MeshBasicMaterial({
             color: 0x10b981,
-            transparent: true,
-            opacity: 0.70
-        });
-
-        // Glowing Selected Tile Material (Warm Gold Ring)
-        this.selectedMat = new THREE.MeshBasicMaterial({
-            color: 0xf59e0b,
             transparent: true,
             opacity: 0.65
         });
 
-        // In Check Danger Material (Crimson)
+        // Selected Tile Marker
+        this.selectedMat = new THREE.MeshBasicMaterial({
+            color: 0xf59e0b,
+            transparent: true,
+            opacity: 0.60
+        });
+
+        // Check Alert Marker
         this.checkMat = new THREE.MeshBasicMaterial({
             color: 0xef4444,
             transparent: true,
-            opacity: 0.75
+            opacity: 0.70
         });
     }
 
@@ -107,9 +110,9 @@ class ChessBoard3D {
         baseMesh.receiveShadow = true;
         this.boardGroup.add(baseMesh);
 
-        // 2. Gold Trim Inlay
-        const trimOuter = new THREE.BoxGeometry(8.26, 0.02, 8.26);
-        const trimMesh = new THREE.Mesh(trimOuter, this.goldTrimMat);
+        // 2. Beveled Inner Border Trim
+        const trimOuter = new THREE.BoxGeometry(8.24, 0.02, 8.24);
+        const trimMesh = new THREE.Mesh(trimOuter, this.trimMat);
         trimMesh.position.y = 0.005;
         this.boardGroup.add(trimMesh);
 
@@ -174,8 +177,8 @@ class ChessBoard3D {
         canvas.width = 128;
         canvas.height = 128;
         const ctx = canvas.getContext('2d');
-        ctx.fillStyle = '#cbd5e1';
-        ctx.font = 'bold 68px Inter, sans-serif';
+        ctx.fillStyle = '#a8a29e';
+        ctx.font = '600 64px Inter, sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText(text, 64, 64);
@@ -183,7 +186,7 @@ class ChessBoard3D {
         const tex = new THREE.CanvasTexture(canvas);
         const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, opacity: 0.85 });
         const sprite = new THREE.Sprite(mat);
-        sprite.scale.set(0.42, 0.42, 1);
+        sprite.scale.set(0.40, 0.40, 1);
         sprite.position.set(x, y, z);
         this.boardGroup.add(sprite);
     }

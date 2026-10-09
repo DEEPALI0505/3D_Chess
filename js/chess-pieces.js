@@ -1,5 +1,5 @@
-// Procedural 3D Chess Pieces with Elegant High-Contrast Ivory & Obsidian Materials
-// Designed for clear visibility, sharp silhouettes, and realistic marble luster
+// Authentic Staunton 3D Chess Pieces matching Reference Images
+// Warm natural Boxwood (White) & Polished Ebony Walnut (Black)
 
 class ChessPieceFactory {
     constructor() {
@@ -7,33 +7,24 @@ class ChessPieceFactory {
     }
 
     initMaterials() {
-        // High visibility Ivory / Cream Alabaster for White pieces (matching reference)
+        // Natural Boxwood / Warm Ivory (matching user reference image)
         this.whiteMaterial = new THREE.MeshStandardMaterial({
-            color: 0xf4ebdb,
-            roughness: 0.20,
-            metalness: 0.06
+            color: 0xdecbb2,
+            roughness: 0.42,
+            metalness: 0.02
         });
 
-        // High visibility Polished Obsidian / Ebony for Black pieces (crisp specular highlights)
+        // Polished Dark Ebony / Walnut (matching user reference image)
         this.blackMaterial = new THREE.MeshStandardMaterial({
-            color: 0x22262d,
-            roughness: 0.24,
-            metalness: 0.32
-        });
-
-        // Polished Gold accent for finials and trims
-        this.goldMaterial = new THREE.MeshStandardMaterial({
-            color: 0xe0b246,
-            roughness: 0.22,
-            metalness: 0.88
+            color: 0x221f1d,
+            roughness: 0.40,
+            metalness: 0.04
         });
     }
 
     createPieceMesh(type, color) {
         const mat = color === 'w' ? this.whiteMaterial : this.blackMaterial;
         const group = new THREE.Group();
-        group.castShadow = true;
-        group.receiveShadow = true;
 
         let pieceObj;
         switch (type.toLowerCase()) {
@@ -61,20 +52,7 @@ class ChessPieceFactory {
 
         group.add(pieceObj);
 
-        // Elegant Double-Ring Weighted Base
-        const ringGeo1 = new THREE.TorusGeometry(0.35, 0.022, 16, 36);
-        ringGeo1.rotateX(Math.PI / 2);
-        const ring1 = new THREE.Mesh(ringGeo1, mat);
-        ring1.position.y = 0.04;
-        group.add(ring1);
-
-        const ringGeo2 = new THREE.TorusGeometry(0.32, 0.016, 16, 36);
-        ringGeo2.rotateX(Math.PI / 2);
-        const ring2 = new THREE.Mesh(ringGeo2, this.goldMaterial);
-        ring2.position.y = 0.08;
-        group.add(ring2);
-
-        // Enable shadow on all meshes
+        // Enable shadows
         group.traverse(child => {
             if (child.isMesh) {
                 child.castShadow = true;
@@ -91,26 +69,25 @@ class ChessPieceFactory {
     }
 
     createPawn(mat) {
-        // Graceful curved pawn profile
+        // Classic Staunton Pawn (as seen in reference)
         const pts = [
             new THREE.Vector2(0, 0),
             new THREE.Vector2(0.36, 0),
-            new THREE.Vector2(0.36, 0.07),
-            new THREE.Vector2(0.30, 0.12),
+            new THREE.Vector2(0.36, 0.06),
+            new THREE.Vector2(0.32, 0.12),
             new THREE.Vector2(0.24, 0.18),
-            new THREE.Vector2(0.18, 0.36),
-            new THREE.Vector2(0.14, 0.58),
-            new THREE.Vector2(0.20, 0.66),
-            new THREE.Vector2(0.18, 0.70),
-            new THREE.Vector2(0.10, 0.73)
+            new THREE.Vector2(0.18, 0.35),
+            new THREE.Vector2(0.14, 0.55),
+            new THREE.Vector2(0.22, 0.62),
+            new THREE.Vector2(0.18, 0.66),
+            new THREE.Vector2(0.10, 0.70)
         ];
         const body = this.createLathePiece(pts, mat);
 
-        // Prominent Head Sphere
-        const headGeo = new THREE.SphereGeometry(0.18, 28, 28);
+        // Spherical Head
+        const headGeo = new THREE.SphereGeometry(0.17, 28, 28);
         const head = new THREE.Mesh(headGeo, mat);
-        head.position.y = 0.88;
-        head.scale.set(1.02, 1.05, 1.02);
+        head.position.y = 0.85;
 
         const group = new THREE.Group();
         group.add(body);
@@ -119,19 +96,19 @@ class ChessPieceFactory {
     }
 
     createRook(mat) {
-        // Solid castle rook with beveled battlement rim
+        // Classic Staunton Rook Tower (as seen in reference)
         const pts = [
             new THREE.Vector2(0, 0),
             new THREE.Vector2(0.38, 0),
             new THREE.Vector2(0.38, 0.08),
-            new THREE.Vector2(0.32, 0.14),
+            new THREE.Vector2(0.34, 0.14),
             new THREE.Vector2(0.26, 0.22),
-            new THREE.Vector2(0.22, 0.65),
-            new THREE.Vector2(0.27, 0.85),
-            new THREE.Vector2(0.35, 0.94),
-            new THREE.Vector2(0.35, 1.14),
-            new THREE.Vector2(0.25, 1.14),
-            new THREE.Vector2(0.25, 1.00)
+            new THREE.Vector2(0.23, 0.62),
+            new THREE.Vector2(0.28, 0.82),
+            new THREE.Vector2(0.34, 0.90),
+            new THREE.Vector2(0.34, 1.10),
+            new THREE.Vector2(0.26, 1.10),
+            new THREE.Vector2(0.26, 0.96)
         ];
         const body = this.createLathePiece(pts, mat);
         const group = new THREE.Group();
@@ -140,11 +117,11 @@ class ChessPieceFactory {
         // 4 Castle Crenellations
         for (let i = 0; i < 4; i++) {
             const angle = (i / 4) * Math.PI * 2;
-            const bGeo = new THREE.BoxGeometry(0.13, 0.16, 0.13);
+            const bGeo = new THREE.BoxGeometry(0.12, 0.14, 0.12);
             const bMesh = new THREE.Mesh(bGeo, mat);
             bMesh.position.x = Math.cos(angle) * 0.28;
             bMesh.position.z = Math.sin(angle) * 0.28;
-            bMesh.position.y = 1.17;
+            bMesh.position.y = 1.13;
             group.add(bMesh);
         }
 
@@ -152,54 +129,54 @@ class ChessPieceFactory {
     }
 
     createKnight(mat, color) {
-        // Base
+        // Classic Staunton Carved Horse Knight (as seen in reference)
         const pts = [
             new THREE.Vector2(0, 0),
             new THREE.Vector2(0.38, 0),
             new THREE.Vector2(0.38, 0.08),
-            new THREE.Vector2(0.32, 0.14),
-            new THREE.Vector2(0.27, 0.22),
-            new THREE.Vector2(0.23, 0.34),
-            new THREE.Vector2(0, 0.34)
+            new THREE.Vector2(0.34, 0.14),
+            new THREE.Vector2(0.28, 0.22),
+            new THREE.Vector2(0.24, 0.32),
+            new THREE.Vector2(0, 0.32)
         ];
         const base = this.createLathePiece(pts, mat);
 
         const headGroup = new THREE.Group();
 
-        // Arched Neck
-        const neckGeo = new THREE.CylinderGeometry(0.18, 0.26, 0.58, 20);
-        neckGeo.rotateZ(0.28);
-        neckGeo.scale(1, 1, 0.7);
+        // Curved Neck
+        const neckGeo = new THREE.CylinderGeometry(0.17, 0.25, 0.58, 20);
+        neckGeo.rotateZ(0.26);
+        neckGeo.scale(1, 1, 0.68);
         const neck = new THREE.Mesh(neckGeo, mat);
-        neck.position.set(0.04, 0.60, 0);
+        neck.position.set(0.04, 0.58, 0);
         headGroup.add(neck);
 
-        // Sculpted Head / Muzzle
-        const snoutGeo = new THREE.ConeGeometry(0.20, 0.48, 20);
-        snoutGeo.rotateZ(-Math.PI / 2.4);
+        // Horse Muzzle / Snout
+        const snoutGeo = new THREE.ConeGeometry(0.19, 0.46, 20);
+        snoutGeo.rotateZ(-Math.PI / 2.35);
         snoutGeo.scale(0.85, 1, 0.65);
         const snout = new THREE.Mesh(snoutGeo, mat);
-        snout.position.set(0.24, 0.80, 0);
+        snout.position.set(0.23, 0.78, 0);
         headGroup.add(snout);
 
-        // Stylized Mane
-        const maneGeo = new THREE.BoxGeometry(0.10, 0.52, 0.14);
-        maneGeo.rotateZ(0.32);
+        // Flowing Mane
+        const maneGeo = new THREE.BoxGeometry(0.09, 0.50, 0.12);
+        maneGeo.rotateZ(0.30);
         const mane = new THREE.Mesh(maneGeo, mat);
-        mane.position.set(-0.11, 0.70, 0);
+        mane.position.set(-0.10, 0.68, 0);
         headGroup.add(mane);
 
-        // Pointed Ears
-        const earGeo = new THREE.ConeGeometry(0.065, 0.18, 12);
+        // Alert Ears
+        const earGeo = new THREE.ConeGeometry(0.06, 0.17, 12);
         const ear1 = new THREE.Mesh(earGeo, mat);
-        ear1.position.set(0.02, 1.02, 0.09);
-        ear1.rotation.set(0.12, 0, -0.2);
+        ear1.position.set(0.02, 0.98, 0.08);
+        ear1.rotation.set(0.1, 0, -0.2);
         const ear2 = new THREE.Mesh(earGeo, mat);
-        ear2.position.set(0.02, 1.02, -0.09);
-        ear2.rotation.set(-0.12, 0, -0.2);
+        ear2.position.set(0.02, 0.98, -0.08);
+        ear2.rotation.set(-0.1, 0, -0.2);
         headGroup.add(ear1, ear2);
 
-        // Turn Knight towards opposite side
+        // Point knight toward opponent
         headGroup.rotation.y = color === 'w' ? -Math.PI / 2 : Math.PI / 2;
 
         const group = new THREE.Group();
@@ -209,119 +186,110 @@ class ChessPieceFactory {
     }
 
     createBishop(mat) {
+        // Classic Staunton Bishop with Mitre and Cutout Slit
         const pts = [
             new THREE.Vector2(0, 0),
             new THREE.Vector2(0.38, 0),
             new THREE.Vector2(0.38, 0.08),
-            new THREE.Vector2(0.31, 0.14),
-            new THREE.Vector2(0.25, 0.22),
-            new THREE.Vector2(0.18, 0.58),
+            new THREE.Vector2(0.33, 0.14),
+            new THREE.Vector2(0.26, 0.22),
+            new THREE.Vector2(0.19, 0.58),
             new THREE.Vector2(0.24, 0.78),
-            new THREE.Vector2(0.21, 0.84),
+            new THREE.Vector2(0.20, 0.84),
             new THREE.Vector2(0.12, 0.88)
         ];
         const body = this.createLathePiece(pts, mat);
 
-        // Mitre Head (pointed oval)
-        const mitreGeo = new THREE.SphereGeometry(0.20, 28, 28);
-        mitreGeo.scale(0.85, 1.48, 0.85);
+        // Mitre Head
+        const mitreGeo = new THREE.SphereGeometry(0.20, 24, 24);
+        mitreGeo.scale(0.85, 1.45, 0.85);
         const mitre = new THREE.Mesh(mitreGeo, mat);
         mitre.position.y = 1.08;
 
-        // Slit Cut-out visual (dark angled inset)
-        const slitGeo = new THREE.BoxGeometry(0.06, 0.22, 0.22);
+        // Distinct Slit cut
+        const slitGeo = new THREE.BoxGeometry(0.06, 0.22, 0.24);
         slitGeo.rotateZ(0.35);
-        const slitMat = new THREE.MeshBasicMaterial({ color: 0x111111 });
+        const slitMat = new THREE.MeshBasicMaterial({ color: 0x181512 });
         const slit = new THREE.Mesh(slitGeo, slitMat);
         slit.position.set(0.10, 1.15, 0);
 
-        // Top Gold Pearl Finial
-        const pearlGeo = new THREE.SphereGeometry(0.065, 20, 20);
-        const pearl = new THREE.Mesh(pearlGeo, this.goldMaterial);
-        pearl.position.y = 1.38;
+        // Top Ball Finial
+        const ballGeo = new THREE.SphereGeometry(0.065, 18, 18);
+        const ball = new THREE.Mesh(ballGeo, mat);
+        ball.position.y = 1.38;
 
         const group = new THREE.Group();
         group.add(body);
         group.add(mitre);
         group.add(slit);
-        group.add(pearl);
+        group.add(ball);
         return group;
     }
 
     createQueen(mat) {
+        // Classic Staunton Queen with Elegant Scalloped Coronet
         const pts = [
             new THREE.Vector2(0, 0),
             new THREE.Vector2(0.42, 0),
-            new THREE.Vector2(0.42, 0.10),
-            new THREE.Vector2(0.34, 0.16),
-            new THREE.Vector2(0.27, 0.24),
-            new THREE.Vector2(0.21, 0.72),
-            new THREE.Vector2(0.27, 0.96),
-            new THREE.Vector2(0.23, 1.05),
-            new THREE.Vector2(0.15, 1.08)
+            new THREE.Vector2(0.42, 0.09),
+            new THREE.Vector2(0.35, 0.16),
+            new THREE.Vector2(0.28, 0.24),
+            new THREE.Vector2(0.22, 0.72),
+            new THREE.Vector2(0.28, 0.98),
+            new THREE.Vector2(0.24, 1.06),
+            new THREE.Vector2(0.16, 1.10)
         ];
         const body = this.createLathePiece(pts, mat);
 
-        // Flared Coronet Crown
+        // Flared Coronet Rim
         const crownPts = [
-            new THREE.Vector2(0.15, 1.08),
-            new THREE.Vector2(0.32, 1.32),
-            new THREE.Vector2(0.28, 1.34),
-            new THREE.Vector2(0.19, 1.27),
-            new THREE.Vector2(0, 1.22)
+            new THREE.Vector2(0.16, 1.10),
+            new THREE.Vector2(0.30, 1.30),
+            new THREE.Vector2(0.26, 1.32),
+            new THREE.Vector2(0.18, 1.25),
+            new THREE.Vector2(0, 1.20)
         ];
         const crown = this.createLathePiece(crownPts, mat);
 
-        // Gold Pearls on coronet tips
-        const crownRims = new THREE.Group();
-        const petals = 8;
-        for (let i = 0; i < petals; i++) {
-            const angle = (i / petals) * Math.PI * 2;
-            const pGeo = new THREE.SphereGeometry(0.045, 16, 16);
-            const pMesh = new THREE.Mesh(pGeo, this.goldMaterial);
-            pMesh.position.set(Math.cos(angle) * 0.30, 1.35, Math.sin(angle) * 0.30);
-            crownRims.add(pMesh);
-        }
-
         // Center Pearl
-        const centerPearlGeo = new THREE.SphereGeometry(0.095, 20, 20);
-        const centerPearl = new THREE.Mesh(centerPearlGeo, this.goldMaterial);
-        centerPearl.position.y = 1.35;
+        const centerPearlGeo = new THREE.SphereGeometry(0.08, 18, 18);
+        const centerPearl = new THREE.Mesh(centerPearlGeo, mat);
+        centerPearl.position.y = 1.30;
 
         const group = new THREE.Group();
         group.add(body);
         group.add(crown);
-        group.add(crownRims);
         group.add(centerPearl);
         return group;
     }
 
     createKing(mat) {
+        // Classic Staunton King with Regal Double-Collar and Cross Finial
         const pts = [
             new THREE.Vector2(0, 0),
             new THREE.Vector2(0.44, 0),
-            new THREE.Vector2(0.44, 0.10),
-            new THREE.Vector2(0.36, 0.17),
-            new THREE.Vector2(0.29, 0.26),
-            new THREE.Vector2(0.23, 0.82),
-            new THREE.Vector2(0.31, 1.12),
+            new THREE.Vector2(0.44, 0.09),
+            new THREE.Vector2(0.37, 0.16),
+            new THREE.Vector2(0.30, 0.25),
+            new THREE.Vector2(0.24, 0.80),
+            new THREE.Vector2(0.32, 1.12),
             new THREE.Vector2(0.27, 1.22),
-            new THREE.Vector2(0.17, 1.26)
+            new THREE.Vector2(0.18, 1.26)
         ];
         const body = this.createLathePiece(pts, mat);
 
-        // Arch Crown
-        const crownGeo = new THREE.SphereGeometry(0.26, 28, 28);
-        crownGeo.scale(1, 0.85, 1);
+        // Crown Arch
+        const crownGeo = new THREE.SphereGeometry(0.26, 24, 24);
+        crownGeo.scale(1, 0.82, 1);
         const crown = new THREE.Mesh(crownGeo, mat);
         crown.position.y = 1.38;
 
-        // Royal Maltese Cross Finial in Solid Gold
+        // Traditional Carved Cross Finial
         const crossGroup = new THREE.Group();
-        const vBar = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.25, 0.06), this.goldMaterial);
-        const hBar = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.06, 0.06), this.goldMaterial);
-        vBar.position.y = 1.66;
-        hBar.position.y = 1.70;
+        const vBar = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.24, 0.06), mat);
+        const hBar = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.06, 0.06), mat);
+        vBar.position.y = 1.64;
+        hBar.position.y = 1.68;
         crossGroup.add(vBar, hBar);
 
         const group = new THREE.Group();
