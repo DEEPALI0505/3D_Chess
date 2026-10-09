@@ -518,39 +518,36 @@ body {
     background: #ef4444;
 }
 
-/* Floating Air-Glass Corner Chat HUD (Docked in true bottom-right corner, completely off the board) */
+/* Floating Air-Glass Corner Chat HUD (Docked in true bottom-right corner, completely borderless air effect) */
 .floating-corner-chat {
     position: fixed;
     bottom: 20px;
     right: 24px;
-    width: 305px;
-    height: 195px;
-    background: rgba(10, 12, 16, 0.15);
+    width: 290px;
+    height: 175px;
+    background: rgba(10, 12, 16, 0.12);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
     border-radius: 16px;
     display: flex;
     flex-direction: column;
-    padding: 8px 10px;
+    padding: 6px 10px;
     gap: 6px;
     z-index: 50;
     transition: all 0.25s ease;
 }
 
 .floating-corner-chat:hover {
-    background: rgba(10, 12, 16, 0.30);
-    border-color: rgba(255, 255, 255, 0.10);
+    background: rgba(10, 12, 16, 0.22);
+    border: none !important;
+    box-shadow: none !important;
 }
 
 .workspace > aside:last-child {
     max-height: calc(100vh - 320px);
-}
-
-.air-chat-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
 }
 
 .air-chat-title {

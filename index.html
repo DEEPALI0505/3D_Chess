@@ -163,9 +163,9 @@
                         <div class="select-wrapper" id="time-control-wrapper">
                             <label class="panel-title">Time Control</label>
                             <select class="select-input" id="select-time">
-                                <option value="60">1 Min (Bullet)</option>
                                 <option value="180">3 Min (Blitz)</option>
                                 <option value="600" selected>10 Min (Rapid)</option>
+                                <option value="1800">30 Min (Classical)</option>
                                 <option value="0">Unlimited (No Timer)</option>
                             </select>
                         </div>
@@ -176,11 +176,8 @@
         </main>
     </div>
 
-    <!-- Floating Air-Glass Corner Chat HUD (See-through floating in air) -->
+    <!-- Floating Air-Glass Corner Chat HUD (See-through floating in air, borderless) -->
     <div class="floating-corner-chat interactive" id="floating-chat">
-        <div class="air-chat-header">
-            <span class="air-chat-title"><i class="fa-solid fa-comments"></i> Match Chat</span>
-        </div>
         <div class="air-chat-messages" id="panel-chat-messages">
             <div class="air-msg them">Welcome! Chat floating in air.</div>
         </div>
