@@ -847,7 +847,17 @@ class ChessApp {
     }
 }
 
-// Start app once DOM is ready
-window.addEventListener('DOMContentLoaded', () => {
-    window.chessApp = new ChessApp();
-});
+window.ChessApp = ChessApp;
+
+// Start app once DOM is ready (handles both loading and already complete)
+function startZenChess() {
+    if (!window.chessApp) {
+        window.chessApp = new ChessApp();
+    }
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', startZenChess);
+} else {
+    startZenChess();
+}

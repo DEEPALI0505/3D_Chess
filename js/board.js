@@ -176,6 +176,7 @@ class ChessBoard3D {
         const canvas = document.createElement('canvas');
         canvas.width = 128;
         canvas.height = 128;
+        const ctx = canvas.getContext('2d');
         ctx.fillStyle = '#cbd5e1';
         ctx.font = '600 64px Inter, sans-serif';
         ctx.textAlign = 'center';
