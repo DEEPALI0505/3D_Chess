@@ -1,70 +1,74 @@
-# ♟️ Zen Chess 3D — Real-Time Multiplayer & AI Web App
+# 🎮 Game Code Vault
 
-An ultra-sleek, luxury **3D Chess Web Application** built with **Three.js**, **chess.js**, and **PeerJS (WebRTC P2P)**.
-
-![Zen Chess 3D](https://raw.githubusercontent.com/DEEPALI0505/3D_Chess/main/preview.jpg)
-
----
-
-## ✨ Features
-
-- 🎮 **3 Game Modes:**
-  - **Online Multiplayer (P2P):** Play with friends anywhere with zero server latency using WebRTC PeerJS.
-  - **Player vs AI:** Play against an intelligent computer engine with 3 difficulty levels (Easy, Medium, Grandmaster) using Minimax & Alpha-Beta Pruning.
-  - **Pass & Play:** 2 Players on the same device.
-- 🔗 **Instant Friend Invite Link & WhatsApp Share:**
-  - One-click copy invite link with custom `#room=CODE` hash.
-  - Direct WhatsApp match invitation button.
-- 🎨 **Luxury 3D Graphics (Three.js):**
-  - Photorealistic Carrara Marble & Obsidian pieces and board.
-  - Realistic studio lighting, soft shadows, and reflective floor.
-  - Interactive green holographic highlights for legal moves and yellow ring for selected piece.
-  - 360° Orbit camera controls (Rotate, Zoom, Pan) with Camera Reset and Board Flip.
-- ⏱️ **Digital Chess Timers & Time Controls:**
-  - 1 Min Bullet, 3 Min Blitz, 10 Min Rapid, and Unlimited modes.
-- 💬 **In-Game Live Chat & Floating Emoji Reactions:**
-  - Real-time chatting between players and floating animated reactions (👍, 🔥, 😮, 👑, ♟️, 👏).
-- 🔊 **Procedural Web Audio API Sound Effects:**
-  - Marble piece move tap, heavy capture strike, check alert, victory fanfare, and chat notifications (no external MP3 downloads required!).
-- 📜 **Full Chess Rules Compliant:**
-  - Castling (Kingside & Queenside), En Passant, Pawn Promotion modal, Check, Checkmate, and Stalemate detection.
+> A curated collection of luxury **3D WebGL / Three.js games** created by [@DEEPALI0505](https://github.com/DEEPALI0505).  
+> These standalone browser games are built for arcade web applications (such as [After_Party](https://github.com/Ashesh88/After_Party)) and preserved here for future development and reference.
 
 ---
 
-## 🚀 Quick Start (Play Locally)
+## 🕹️ Games in this Repository
 
-No complicated node module installation required!
+| Game | Folder | Tech Stack | Highlights |
+| :--- | :--- | :--- | :--- |
+| **♟️ Zen 3D Chess Studio** | [`/chess`](./chess) | Three.js, Chess.js, PeerJS | Realistic wood/marble board, AI opponent, P2P WebRTC video & audio call, in-game match chat, blitz/rapid timers. |
+| **🎲 Classic 3D Ludo Deluxe** | [`/ludo`](./ludo) | Three.js, Web Audio API | Iconic 4-color board, animated rolling 3D dice, lacquered pawns, 2P/4P/AI bot modes, victory celebration modal. |
 
-### Option 1: Direct Double Click
-Simply double click `index.html` in your web browser.
+---
 
-### Option 2: Local HTTP Server (Recommended for testing multiple browser tabs)
-```bash
-# Using Python
-python -m http.server 8080
+## 📁 Repository Structure
 
-# Or using npx
-npx serve
 ```
-Open your browser at `http://localhost:8080`.
+game_code/
+├── index.html            # Master Arcade Hub & Game Selector Portal
+├── README.md             # Repository Documentation
+│
+├── chess/                # ♟️ Zen 3D Chess Studio
+│   ├── index.html        # Game Entrypoint
+│   ├── style.css         # Dark Glassmorphism & Responsive Mobile Styling
+│   ├── js/
+│   │   ├── lib/          # Three.js, OrbitControls, Chess.js, PeerJS
+│   │   ├── ai.js         # Chess AI Engine
+│   │   ├── app.js        # Core Game Controller & Events
+│   │   ├── audio.js      # Web Audio Synthesis (zero external audio files)
+│   │   ├── board.js      # 3D Board & Coordinate Geometry
+│   │   ├── chess-pieces.js # 3D Piece Sculptures
+│   │   └── multiplayer.js  # P2P WebRTC Signaling & Video Call
+│   └── preview.jpg       # Preview Screenshot
+│
+└── ludo/                 # 🎲 Classic 3D Ludo Deluxe
+    ├── index.html        # Game Entrypoint
+    ├── style.css         # Luxury Cyber Romance Theme & Mobile HUD
+    ├── audio.js          # Web Audio Sound FX (dice rolls, captures, moves)
+    └── js/
+        ├── lib/          # Three.js & OrbitControls
+        ├── board3d.js    # Iconic 4-Color 15x15 Ludo Board Texture & Mesh
+        ├── dice3d.js     # Physics-Inspired Tumbling 3D Rolling Dice
+        ├── pieces3d.js   # Sculpted High-Gloss Lacquered Pawns
+        └── ludo-game.js  # Rule Engine, Turn Manager & Mobile Camera
+```
 
 ---
 
-## 🌐 Deploy to GitHub Pages (Free Hosting)
+## 🚀 How to Run Locally
 
-1. Go to your repository on GitHub: `https://github.com/DEEPALI0505/3D_Chess`
-2. Click **Settings** > **Pages** (in the left sidebar).
-3. Under **Branch**, select `main` branch and folder `/ (root)`.
-4. Click **Save**.
-5. Your 3D Chess game will be live online within a minute at:
-   `https://deepali0505.github.io/3D_Chess/`
+Because all libraries (Three.js, Chess.js, PeerJS, OrbitControls) are self-contained and bundled locally:
+
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/DEEPALI0505/game_code.git
+   cd game_code
+   ```
+2. Open with any static HTTP server (or VS Code Live Server):
+   ```bash
+   # Using Python
+   python -m http.server 8000
+
+   # Or using npx serve
+   npx serve .
+   ```
+3. Open `http://localhost:8000` to view the **Arcade Hub** and launch any game!
 
 ---
 
-## 🛠️ Tech Stack
+## 🔗 Integration with After_Party
 
-- **Graphics:** [Three.js (r128)](https://threejs.org/) + OrbitControls
-- **Game Logic:** [chess.js](https://github.com/jhlywa/chess.js)
-- **Multiplayer:** [PeerJS](https://peerjs.com/) (WebRTC DataConnection)
-- **Audio:** Web Audio API (procedural synthesis)
-- **Styling:** Modern Glassmorphism CSS3 + Google Fonts (`Outfit`, `Inter`, `JetBrains Mono`)
+All games in this repository are designed to be drop-in ready for the [After_Party](https://github.com/Ashesh88/After_Party) Next.js app inside `client/public/games/` and mapped to React components in `client/src/components/games/`.
