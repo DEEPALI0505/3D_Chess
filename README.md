@@ -14,6 +14,8 @@
 | **🎱 Luxury 3D Pool Deluxe** | [`/pool`](./pool) | Three.js, Billiards Physics | Regulation 8-ball table, continuous collision detection, 3D cue stick, laser aiming guide, leather drop pockets, AI bot. |
 | **🏎️ Turbo 3D Racer** | [`/racer`](./racer) | Three.js, Web Audio API | Cyberpunk neon highway, 3D luxury supercars, F1 starting gantry, 2-player head-to-head duel, and nitro flame jets. |
 | **♠️ Royal 3D Cards Studio** | [`/cards`](./cards) | Three.js, Web Audio API | Luxury emerald velvet casino table, animated 3D card dealing, card flips, chip betting tray, and Blackjack 21 duel. |
+| **🎳 Cosmic 3D Bowling** | [`/bowling`](./bowling) | Three.js, Web Audio API | Lacquered hardwood bowling alley, neon gutters, 10-pin triangle collision chain reactions, and tournament scorecard. |
+| **🎯 3D Pub Darts Studio** | [`/darts`](./darts) | Three.js, Web Audio API | Authentic English tournament bristle dartboard, 3D brass darts, aim tremor, board stick thuds, and 301 countdown. |
 
 ---
 
@@ -28,13 +30,9 @@ game_code/
 ├── ludo/                 # 🎲 Classic 3D Ludo Deluxe
 ├── pool/                 # 🎱 Luxury 3D Pool Deluxe
 ├── racer/                # 🏎️ Turbo 3D Racer
-└── cards/                # ♠️ Royal 3D Cards Studio
-    ├── index.html        # Game Entrypoint
-    ├── style.css         # Luxury Casino Felt Stylesheet
-    ├── audio.js          # Web Audio Synthesizer (card slide, flip, chip clink, win)
-    └── js/
-        ├── lib/          # Three.js
-        └── cards-game.js # 3D Card Dealing, Physics & Blackjack Engine
+├── cards/                # ♠️ Royal 3D Cards Studio
+├── bowling/              # 🎳 Cosmic 3D Bowling
+└── darts/                # 🎯 3D Pub Darts Studio
 ```
 
 ---
