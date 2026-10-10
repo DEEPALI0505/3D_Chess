@@ -11,8 +11,9 @@
 | :--- | :--- | :--- | :--- |
 | **♟️ Zen 3D Chess Studio** | [`/chess`](./chess) | Three.js, Chess.js, PeerJS | Realistic wood/marble board, AI opponent, P2P WebRTC video & audio call, in-game match chat, blitz/rapid timers. |
 | **🎲 Classic 3D Ludo Deluxe** | [`/ludo`](./ludo) | Three.js, Web Audio API | Iconic 4-color board, animated rolling 3D dice, lacquered pawns, 2P/4P/AI bot modes, victory celebration modal. |
-| **🎱 Couples 3D Pool Deluxe** | [`/pool`](./pool) | Three.js, Billiards Physics | Regulation 8-ball table, continuous collision detection, 3D cue stick, laser aiming guide, leather drop pockets, AI bot. |
-| **🏎️ Couples Turbo 3D Racer** | [`/racer`](./racer) | Three.js, Web Audio API | Cyberpunk neon highway, 3D supercars, nitro boost flame jets, drifting physics, rubber-band AI rivals, 4P Grand Prix mode. |
+| **🎱 Luxury 3D Pool Deluxe** | [`/pool`](./pool) | Three.js, Billiards Physics | Regulation 8-ball table, continuous collision detection, 3D cue stick, laser aiming guide, leather drop pockets, AI bot. |
+| **🏎️ Turbo 3D Racer** | [`/racer`](./racer) | Three.js, Web Audio API | Cyberpunk neon highway, 3D luxury supercars, F1 starting gantry, 2-player head-to-head duel, and nitro flame jets. |
+| **♠️ Royal 3D Cards Studio** | [`/cards`](./cards) | Three.js, Web Audio API | Luxury emerald velvet casino table, animated 3D card dealing, card flips, chip betting tray, and Blackjack 21 duel. |
 
 ---
 
@@ -25,14 +26,15 @@ game_code/
 │
 ├── chess/                # ♟️ Zen 3D Chess Studio
 ├── ludo/                 # 🎲 Classic 3D Ludo Deluxe
-├── pool/                 # 🎱 Couples 3D Pool Deluxe
-└── racer/                # 🏎️ Couples Turbo 3D Racer
+├── pool/                 # 🎱 Luxury 3D Pool Deluxe
+├── racer/                # 🏎️ Turbo 3D Racer
+└── cards/                # ♠️ Royal 3D Cards Studio
     ├── index.html        # Game Entrypoint
-    ├── style.css         # Cyberpunk Luxury HUD Stylesheet
-    ├── audio.js          # Web Audio Synthesizer (engine, nitro, drift, victory)
+    ├── style.css         # Luxury Casino Felt Stylesheet
+    ├── audio.js          # Web Audio Synthesizer (card slide, flip, chip clink, win)
     └── js/
         ├── lib/          # Three.js
-        └── racer-game.js # 3D Car Physics, Procedural Highway & AI Engine
+        └── cards-game.js # 3D Card Dealing, Physics & Blackjack Engine
 ```
 
 ---
