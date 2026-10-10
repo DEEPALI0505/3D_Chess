@@ -11,6 +11,7 @@
 | :--- | :--- | :--- | :--- |
 | **♟️ Zen 3D Chess Studio** | [`/chess`](./chess) | Three.js, Chess.js, PeerJS | Realistic wood/marble board, AI opponent, P2P WebRTC video & audio call, in-game match chat, blitz/rapid timers. |
 | **🎲 Classic 3D Ludo Deluxe** | [`/ludo`](./ludo) | Three.js, Web Audio API | Iconic 4-color board, animated rolling 3D dice, lacquered pawns, 2P/4P/AI bot modes, victory celebration modal. |
+| **🎱 Couples 3D Pool Deluxe** | [`/pool`](./pool) | Three.js, Billiards Physics | Regulation 8-ball table, continuous collision detection, 3D cue stick, laser aiming guide, leather drop pockets, AI bot. |
 
 ---
 
@@ -34,16 +35,28 @@ game_code/
 │   │   └── multiplayer.js  # P2P WebRTC Signaling & Video Call
 │   └── preview.jpg       # Preview Screenshot
 │
-└── ludo/                 # 🎲 Classic 3D Ludo Deluxe
+├── ludo/                 # 🎲 Classic 3D Ludo Deluxe
+│   ├── index.html        # Game Entrypoint
+│   ├── style.css         # Luxury Cyber Romance Theme & Mobile HUD
+│   ├── audio.js          # Web Audio Sound FX (dice rolls, captures, moves)
+│   └── js/
+│       ├── lib/          # Three.js & OrbitControls
+│       ├── board3d.js    # Iconic 4-Color 15x15 Ludo Board Texture & Mesh
+│       ├── dice3d.js     # Physics-Inspired Tumbling 3D Rolling Dice
+│       ├── pieces3d.js   # Sculpted High-Gloss Lacquered Pawns
+│       └── ludo-game.js  # Rule Engine, Turn Manager & Mobile Camera
+│
+└── pool/                 # 🎱 Couples 3D Pool Deluxe
     ├── index.html        # Game Entrypoint
-    ├── style.css         # Luxury Cyber Romance Theme & Mobile HUD
-    ├── audio.js          # Web Audio Sound FX (dice rolls, captures, moves)
+    ├── style.css         # Luxury Cyber Romance Theme & Power HUD
+    ├── audio.js          # Synthesized Cue & Ball Acoustics
     └── js/
         ├── lib/          # Three.js & OrbitControls
-        ├── board3d.js    # Iconic 4-Color 15x15 Ludo Board Texture & Mesh
-        ├── dice3d.js     # Physics-Inspired Tumbling 3D Rolling Dice
-        ├── pieces3d.js   # Sculpted High-Gloss Lacquered Pawns
-        └── ludo-game.js  # Rule Engine, Turn Manager & Mobile Camera
+        ├── table3d.js    # Regulation 2:1 Tournament Billiards Table
+        ├── balls3d.js    # 16 Regulation Numbered Solids & Stripes Balls
+        ├── cue3d.js      # 3D Tapered Maple Cue Stick & Trajectory Guide
+        ├── pool-physics.js # Multistep Continuous Billiards Physics
+        └── pool-game.js  # 8-Ball Rule Engine, Couples Turns & AI Bot
 ```
 
 ---
